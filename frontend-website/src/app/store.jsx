@@ -1,0 +1,15 @@
+import { configureStore } from "@reduxjs/toolkit";
+import rumahSakitSlice from "../features/rumahSakitSlice";
+import graphSlice from "../features/graphSlice";
+import darahSlice from "../features/darahSlice";
+import pengantaranSlice from "../features/pengantaranSlice";
+
+export default configureStore({
+  reducer: {
+    rs: rumahSakitSlice,
+    graph: graphSlice,
+    darah: darahSlice,
+    pengantaran: pengantaranSlice,
+  },
+  devTools: true,
+});

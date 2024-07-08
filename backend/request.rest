@@ -1,0 +1,9 @@
+POST http://localhost:5001/graph
+Content-Type: application/json
+
+{
+    "rsId": "1dca934e-7aea-43a1-ba9c-a5ac48919a79"
+}
+
+###
+GET http://localhost:5001/pengantaran?searchKey=&limit=10&page0
