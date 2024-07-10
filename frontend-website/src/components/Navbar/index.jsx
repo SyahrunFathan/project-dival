@@ -17,12 +17,14 @@ const Navbar = () => {
             {location.pathname === "/dashboard"
               ? "Dashboard"
               : location.pathname === "/rs"
-              ? "Rumah Sakit"
+              ? "Data Rumah Sakit"
               : location.pathname === "/graph"
-              ? "Graph"
+              ? "Data Graph"
               : location.pathname === "/darah"
               ? "Data Darah"
-              : ""}
+              : location.pathname === "/pengantaran"
+              ? "Data Pengantaran"
+              : "Data User"}
           </li>
         </ul>
       </div>

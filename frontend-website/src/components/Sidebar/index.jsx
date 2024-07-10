@@ -102,14 +102,18 @@ const Sidebar = () => {
             Pengantaran
           </NavLink>
         </li>
-        <li className="mb-1 group">
-          <a
-            href="#"
+        <li
+          className={
+            "mb-1 group " + (location.pathname === "/user" ? "active" : "")
+          }
+        >
+          <NavLink
+            to={"/user"}
             className="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-700 group-[.active]:text-white"
           >
             <IoPersonOutline className="mr-3 text-lg" />
             User
-          </a>
+          </NavLink>
         </li>
       </ul>
       <ul className="border-t border-t-gray-700">

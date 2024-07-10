@@ -5,6 +5,7 @@ import RumahSakitPage from "./pages/RumahSakit";
 import GraphPage from "./pages/Graph";
 import DarahPage from "./pages/Darah";
 import PengantaranPage from "./pages/Pengantaran";
+import UserPage from "./pages/User";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/graph" element={<GraphPage />} />
         <Route path="/darah" element={<DarahPage />} />
         <Route path="/pengantaran" element={<PengantaranPage />} />
+        <Route path="/user" element={<UserPage />} />
       </Routes>
     </BrowserRouter>
   );
