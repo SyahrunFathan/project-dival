@@ -42,6 +42,12 @@ export const patchPengantaran = async (searchKey, limit, page) =>
 export const patchDataUserApi = async (searchKey, limit, page) =>
   API.get(`/user?searchKey=${searchKey}&limit=${limit}&page=${page}`);
 export const patchDataUserByIdApi = async (id) => API.get(`/user/$${id}`);
-export const postUserApi = async (data) => API.post("/user", data);
+export const postUserApi = async (data) =>
+  API.post("/user", data, {
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
+    },
+  });
 export const updateUserApi = async (id, data) => API.patch(`/user/${id}`, data);
 export const deleteUserApi = async (id) => API.delete(`/user/${id}`);

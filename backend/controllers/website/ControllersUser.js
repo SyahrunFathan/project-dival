@@ -80,15 +80,15 @@ export const createUser = async (req, res) => {
     return res
       .status(400)
       .json({ message: "Username Tidak Boleh Kosong!", error: "username" });
-  if (tanggalLahir === "")
-    return res.status(400).json({
-      message: "Tanggal Lahir Tidak Boleh Kosong!",
-      error: "tanggalLahir",
-    });
   if (tempatLahir === "")
     return res.status(400).json({
       message: "Tempat Lahir Tidak Boleh Kosong!",
       error: "tempatLahir",
+    });
+  if (tanggalLahir === "")
+    return res.status(400).json({
+      message: "Tanggal Lahir Tidak Boleh Kosong!",
+      error: "tanggalLahir",
     });
   if (alamat === "")
     return res.status(400).json({
@@ -105,22 +105,38 @@ export const createUser = async (req, res) => {
       message: "No Telp Tidak Boleh Kosong!",
       error: "telpon",
     });
-  if (username > 25)
-    return res.status(400).json({ message: "Username terlalu panjang!" });
+  if (username > 20)
+    return res
+      .status(400)
+      .json({ message: "Username terlalu panjang!", error: "username" });
+  const checkEmail = await ModelUser.findAll({
+    where: {
+      email: email,
+    },
+  });
+  if (checkEmail[0])
+    return res
+      .status(400)
+      .json({ message: "Email sudah terdaftar!", error: "email" });
   if (req.files === null)
-    return res.status(400).json({ message: "Anda belum memilih gambar!" });
+    return res
+      .status(400)
+      .json({ message: "Anda belum memilih gambar!", error: "foto" });
   const file = req.files.file;
   const fileSize = file.data.length;
   const fileext = path.extname(file.name);
-  const filename = Date.now() + fileext;
+  const filename = Date.now() + "-" + file.name;
   const url = `${req.protocol}://${req.get("host")}/public/${filename}`;
   const allowedType = [".png", ".jpeg", ".jpg"];
   if (!allowedType.includes(fileext.toLowerCase()))
+    return res.status(400).json({
+      message: "Gambar harus berupa .png, .jpg atau .jpeg!",
+      error: "foto",
+    });
+  if (fileSize > 3000000)
     return res
       .status(400)
-      .json({ message: "Gambar harus berupa .png, .jpg atau .jpeg!" });
-  if (fileSize > 3000000)
-    return res.status(400).json({ message: "File tidak boleh melebihi 3mb!" });
+      .json({ message: "File tidak boleh melebihi 3mb!", error: "foto" });
   file.mv(`./public/${filename}`, async (err) => {
     if (err) return res.status(500).json({ message: err.message });
     try {
@@ -139,7 +155,6 @@ export const createUser = async (req, res) => {
         path_foto: url,
         password: hashPassword,
       });
-
       return res.status(201).json({ message: "Data berhasil di simpan!" });
     } catch (error) {
       return res.status(500).json({ error });
@@ -170,15 +185,15 @@ export const updateUser = async (req, res) => {
     return res
       .status(400)
       .json({ message: "Username Tidak Boleh Kosong!", error: "username" });
-  if (tanggalLahir === "")
-    return res.status(400).json({
-      message: "Tanggal Lahir Tidak Boleh Kosong!",
-      error: "tanggalLahir",
-    });
   if (tempatLahir === "")
     return res.status(400).json({
       message: "Tempat Lahir Tidak Boleh Kosong!",
       error: "tempatLahir",
+    });
+  if (tanggalLahir === "")
+    return res.status(400).json({
+      message: "Tanggal Lahir Tidak Boleh Kosong!",
+      error: "tanggalLahir",
     });
   if (alamat === "")
     return res.status(400).json({
@@ -195,8 +210,10 @@ export const updateUser = async (req, res) => {
       message: "No Telp Tidak Boleh Kosong!",
       error: "telpon",
     });
-  if (username > 25)
-    return res.status(400).json({ message: "Username terlalu panjang!" });
+  if (username > 20)
+    return res
+      .status(400)
+      .json({ message: "Username terlalu panjang!", error: "username" });
   if (req.files === null) {
     await ModelUser.update(
       {
@@ -225,13 +242,14 @@ export const updateUser = async (req, res) => {
     const url = `${req.protocol}://${req.get("host")}/public/${filename}`;
     const allowedType = [".png", ".jpeg", ".jpg"];
     if (!allowedType.includes(fileext.toLowerCase()))
-      return res
-        .status(400)
-        .json({ message: "Gambar harus berupa .png, .jpg atau .jpeg!" });
+      return res.status(400).json({
+        message: "Gambar harus berupa .png, .jpg atau .jpeg!",
+        error: "foto",
+      });
     if (fileSize > 3000000)
       return res
         .status(400)
-        .json({ message: "File tidak boleh melebihi 3mb!" });
+        .json({ message: "File tidak boleh melebihi 3mb!", error: "foto" });
     file.mv(`./public/${filename}`, async (err) => {
       if (err) return res.status(500).json({ message: err.message });
       try {
