@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  deleteUserApi,
   patchDataUserApi,
   patchDataUserByIdApi,
-  postUserApi,
 } from "../utils/apis";
 
 const initialState = {
@@ -39,26 +39,17 @@ export const GetUserById = createAsyncThunk(
   }
 );
 
-// export const CreateUser = createAsyncThunk(
-//   "user/createUser",
-//   async (state, thunkAPI) => {
-//     try {
-//       const response = await postUserApi({
-//         nama: state.nama,
-//         email: state.email,
-//         tempatLahir: state.tempatLahir,
-//         tanggalLahir: state.tanggalLahir,
-//         alamat: state.alamat,
-//         jenisKelamin: state.jenisKelamin,
-//         telpon: state.telpon,
-//         username: state.username,
-//       });
-//       return { status: response.status, data: response.data };
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue(error.response.data);
-//     }
-//   }
-// );
+export const DeleteUserSlice = createAsyncThunk(
+  "user/deleteUser",
+  async (state, thunkAPI) => {
+    try {
+      const response = await deleteUserApi(state.id);
+      return { status: response.status, data: response.data };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: "user",

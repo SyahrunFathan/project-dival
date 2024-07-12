@@ -9,11 +9,15 @@ import {
   IoTrash,
 } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { GetUsers } from "../../features/userSlice";
+import {
+  DeleteUserSlice,
+  GetUserById,
+  GetUsers,
+} from "../../features/userSlice";
 import ReactPaginate from "react-paginate";
 import { ILDefaultIcon } from "../../assets/icons";
-import { postUserApi } from "../../utils/apis";
-import { showSuccess } from "../../utils/messages";
+import { postUserApi, updateUserApi } from "../../utils/apis";
+import { showConfirmation, showSuccess } from "../../utils/messages";
 
 const UserPage = () => {
   const [view, setView] = useState("page1");
@@ -25,6 +29,7 @@ const UserPage = () => {
   const [totalPage, setTotalPage] = useState(0);
   const [imageSrc, setImageSrc] = useState(null);
   const [imageFile, setImageFile] = useState(null);
+  const [userId, setUserId] = useState("");
   const [formData, setFormData] = useState({
     nama: "",
     email: "",
@@ -117,70 +122,199 @@ const UserPage = () => {
 
   const handleSubmitData = async (e) => {
     e.preventDefault();
-    try {
-      const data = new FormData();
-      data.append("file", imageFile);
-      data.append("nama", formData.nama);
-      data.append("email", formData.email);
-      data.append("username", formData.username);
-      data.append("tempatLahir", formData.tempatLahir);
-      data.append("tanggalLahir", formData.tanggalLahir);
-      data.append("alamat", formData.alamat);
-      data.append("jenisKelamin", formData.jenisKelamin);
-      data.append("telpon", formData.telpon);
+    if (userId === "") {
+      try {
+        const data = new FormData();
+        data.append("file", imageFile);
+        data.append("nama", formData.nama);
+        data.append("email", formData.email);
+        data.append("username", formData.username);
+        data.append("tempatLahir", formData.tempatLahir);
+        data.append("tanggalLahir", formData.tanggalLahir);
+        data.append("alamat", formData.alamat);
+        data.append("jenisKelamin", formData.jenisKelamin);
+        data.append("telpon", formData.telpon);
 
-      const response = await postUserApi(data);
-      if (response?.status === 201) {
-        showSuccess(response?.data?.message, () => {
-          AmbilDataUser();
-          setView("page1");
-          setFormData({
-            nama: "",
-            email: "",
-            tanggalLahir: "",
-            tempatLahir: "",
-            alamat: "",
-            jenisKelamin: "",
-            telpon: "",
-            username: "",
-            foto: "",
+        const response = await postUserApi(data);
+        if (response?.status === 201) {
+          showSuccess(response?.data?.message, () => {
+            AmbilDataUser();
+            setView("page1");
+            setFormData({
+              nama: "",
+              email: "",
+              tanggalLahir: "",
+              tempatLahir: "",
+              alamat: "",
+              jenisKelamin: "",
+              telpon: "",
+              username: "",
+              foto: "",
+            });
+            setFormError({
+              nama: "",
+              email: "",
+              tanggalLahir: "",
+              tempatLahir: "",
+              alamat: "",
+              jenisKelamin: "",
+              telpon: "",
+              username: "",
+              foto: "",
+            });
+            setImageSrc(null);
+            setImageFile(null);
           });
-          setFormError({
-            nama: "",
-            email: "",
-            tanggalLahir: "",
-            tempatLahir: "",
-            alamat: "",
-            jenisKelamin: "",
-            telpon: "",
-            username: "",
-            foto: "",
-          });
-          setImageSrc(null);
-          setImageFile(null);
-        });
+        }
+      } catch (error) {
+        if (error?.response?.status === 400) {
+          if (error?.response?.data?.error === "nama")
+            return setFormError({ nama: error?.response?.data?.message });
+          if (error?.response?.data?.error === "email")
+            return setFormError({ email: error?.response?.data?.message });
+          if (error?.response?.data?.error === "username")
+            return setFormError({ username: error?.response?.data?.message });
+          if (error?.response?.data?.error === "tempatLahir")
+            return setFormError({
+              tempatLahir: error?.response?.data?.message,
+            });
+          if (error?.response?.data?.error === "tanggalLahir")
+            return setFormError({
+              tanggalLahir: error?.response?.data?.message,
+            });
+          if (error?.response?.data?.error === "alamat")
+            return setFormError({ alamat: error?.response?.data?.message });
+          if (error?.response?.data?.error === "jenisKelamin")
+            return setFormError({
+              jenisKelamin: error?.response?.data?.message,
+            });
+          if (error?.response?.data?.error === "telpon")
+            return setFormError({ telpon: error?.response?.data?.message });
+          if (error?.response?.data?.error === "foto")
+            return setFormError({ foto: error?.response?.data?.message });
+        }
       }
-    } catch (error) {
-      if (error?.response?.status === 400) {
-        if (error?.response?.data?.error === "nama")
-          return setFormError({ nama: error?.response?.data?.message });
-        if (error?.response?.data?.error === "email")
-          return setFormError({ email: error?.response?.data?.message });
-        if (error?.response?.data?.error === "username")
-          return setFormError({ username: error?.response?.data?.message });
-        if (error?.response?.data?.error === "tempatLahir")
-          return setFormError({ tempatLahir: error?.response?.data?.message });
-        if (error?.response?.data?.error === "tanggalLahir")
-          return setFormError({ tanggalLahir: error?.response?.data?.message });
-        if (error?.response?.data?.error === "alamat")
-          return setFormError({ alamat: error?.response?.data?.message });
-        if (error?.response?.data?.error === "jenisKelamin")
-          return setFormError({ jenisKelamin: error?.response?.data?.message });
-        if (error?.response?.data?.error === "telpon")
-          return setFormError({ telpon: error?.response?.data?.message });
+    } else {
+      try {
+        const data = new FormData();
+        data.append("file", imageFile);
+        data.append("nama", formData.nama);
+        data.append("email", formData.email);
+        data.append("username", formData.username);
+        data.append("tempatLahir", formData.tempatLahir);
+        data.append("tanggalLahir", formData.tanggalLahir);
+        data.append("alamat", formData.alamat);
+        data.append("jenisKelamin", formData.jenisKelamin);
+        data.append("telpon", formData.telpon);
+
+        const response = await updateUserApi(userId, data);
+        if (response?.status === 200) {
+          showSuccess(response?.data?.message, () => {
+            AmbilDataUser();
+            setView("page1");
+            setFormData({
+              nama: "",
+              email: "",
+              tanggalLahir: "",
+              tempatLahir: "",
+              alamat: "",
+              jenisKelamin: "",
+              telpon: "",
+              username: "",
+              foto: "",
+            });
+            setFormError({
+              nama: "",
+              email: "",
+              tanggalLahir: "",
+              tempatLahir: "",
+              alamat: "",
+              jenisKelamin: "",
+              telpon: "",
+              username: "",
+              foto: "",
+            });
+            setImageSrc(null);
+            setImageFile(null);
+          });
+        }
+      } catch (error) {
+        if (error?.response?.status === 400) {
+          if (error?.response?.data?.error === "nama")
+            return setFormError({ nama: error?.response?.data?.message });
+          if (error?.response?.data?.error === "email")
+            return setFormError({ email: error?.response?.data?.message });
+          if (error?.response?.data?.error === "username")
+            return setFormError({ username: error?.response?.data?.message });
+          if (error?.response?.data?.error === "tempatLahir")
+            return setFormError({
+              tempatLahir: error?.response?.data?.message,
+            });
+          if (error?.response?.data?.error === "tanggalLahir")
+            return setFormError({
+              tanggalLahir: error?.response?.data?.message,
+            });
+          if (error?.response?.data?.error === "alamat")
+            return setFormError({ alamat: error?.response?.data?.message });
+          if (error?.response?.data?.error === "jenisKelamin")
+            return setFormError({
+              jenisKelamin: error?.response?.data?.message,
+            });
+          if (error?.response?.data?.error === "telpon")
+            return setFormError({ telpon: error?.response?.data?.message });
+          if (error?.response?.data?.error === "foto")
+            return setFormError({ foto: error?.response?.data?.message });
+        }
       }
     }
   };
+
+  const handleEdit = async (id) => {
+    try {
+      const response = await dispatch(GetUserById({ id: id }));
+      if (response?.payload?.status === 200) {
+        setView("page2");
+        setFormData({
+          nama: response?.payload?.data?.nama_lengkap,
+          alamat: response?.payload?.data?.alamat,
+          email: response?.payload?.data?.email,
+          foto: response?.payload?.data?.foto,
+          jenisKelamin: response?.payload?.data?.jenis_kelamin,
+          username: response?.payload?.data?.username,
+          tanggalLahir: response?.payload?.data?.tanggal_lahir,
+          tempatLahir: response?.payload?.data?.tempat_lahir,
+          telpon: response?.payload?.data?.no_telp,
+        });
+        setImageSrc(response?.payload?.data?.path_foto);
+        setUserId(response?.payload?.data?.id_user);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = (id) => {
+    showConfirmation(
+      "Proses Delete!",
+      "Anda yakin menghapus data ini?",
+      "warning",
+      "Ya, Hapus!",
+      "Batal",
+      async () => {
+        try {
+          const response = await dispatch(DeleteUserSlice({ id: id }));
+          if (response?.payload?.status === 200) {
+            showSuccess(response?.payload?.data?.message, () => {
+              AmbilDataUser();
+            });
+          }
+        } catch (error) {
+          console.log(error?.response?.data);
+        }
+      }
+    );
+  };
+
   return (
     <Layouts>
       <div className="flex flex-col w-full">
@@ -270,12 +404,14 @@ const UserPage = () => {
                             <td className="px-6 py-4 flex flex-row gap-2 items-center">
                               <button
                                 type="button"
+                                onClick={() => handleEdit(item?.id_user)}
                                 className="text-sm text-yellow-400 font-semibold"
                               >
                                 <IoPencil size={20} />
                               </button>
                               <button
                                 type="button"
+                                onClick={() => handleDelete(item?.id_user)}
                                 className="text-sm text-red-400 font-semibold"
                               >
                                 <IoTrash size={20} />
@@ -358,6 +494,7 @@ const UserPage = () => {
                       (formError.foto && "border-red-500")
                     }
                     onChange={handleChangeImage}
+                    accept="image/*"
                   />
                   {formError.foto && (
                     <p className="text-sm mt-1 text-red-500">

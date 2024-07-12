@@ -238,7 +238,7 @@ export const updateUser = async (req, res) => {
     const file = req.files.file;
     const fileSize = file.data.length;
     const fileext = path.extname(file.name);
-    const filename = Date.now() + fileext;
+    const filename = Date.now() + "-" + file.name;
     const url = `${req.protocol}://${req.get("host")}/public/${filename}`;
     const allowedType = [".png", ".jpeg", ".jpg"];
     if (!allowedType.includes(fileext.toLowerCase()))
