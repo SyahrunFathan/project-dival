@@ -8,10 +8,36 @@ import {
   IoMedkitOutline,
   IoPersonOutline,
 } from "react-icons/io5";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { getItem, removeItem } from "../../utils/storages";
+import { removeTokenApi } from "../../utils/apis";
+import { showConfirmation } from "../../utils/messages";
 
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const HandleLogout = () => {
+    const profile = getItem("profile");
+    showConfirmation(
+      "Logout?",
+      "Anda yakin keluar aplikasi?",
+      "warning",
+      "Ya, Keluar!",
+      "Batal",
+      async () => {
+        try {
+          const response = await removeTokenApi(profile?.data?.userId);
+          if (response.status === 200) {
+            removeItem("profile");
+            navigate("/");
+          }
+        } catch (error) {
+          console.log(error.response);
+        }
+      }
+    );
+  };
   return (
     <div className="w-[20%] bg-gray-800 flex flex-col shadow-sm p-4 h-screen fixed">
       <NavLink
@@ -118,13 +144,14 @@ const Sidebar = () => {
       </ul>
       <ul className="border-t border-t-gray-700">
         <li className="mb-1 group">
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={HandleLogout}
             className="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-700 group-[.active]:text-white"
           >
             <IoMdLogOut className="mr-3 text-lg" />
             Logout
-          </a>
+          </button>
         </li>
       </ul>
     </div>

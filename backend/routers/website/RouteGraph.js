@@ -1,14 +1,19 @@
-import express from "express";
-import {
+const express = require("express");
+const {
   createGraph,
   deleteGraph,
   getGraph,
-} from "../../controllers/website/ControllersGraph.js";
+  postDirection,
+} = require("../../controllers/website/ControllersGraph.js");
+const Authentication = require("../../middleware/Authentication.js");
 
 const router = express.Router();
+
+router.use(Authentication);
 
 router.post("/", createGraph);
 router.get("/", getGraph);
 router.delete("/:id", deleteGraph);
+router.post("/direction", postDirection);
 
-export default router;
+module.exports = router;

@@ -6,6 +6,7 @@ import GraphPage from "./pages/Graph";
 import DarahPage from "./pages/Darah";
 import PengantaranPage from "./pages/Pengantaran";
 import UserPage from "./pages/User";
+import LoginPage from "./pages/Login";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/darah" element={<DarahPage />} />
         <Route path="/pengantaran" element={<PengantaranPage />} />
         <Route path="/user" element={<UserPage />} />
+        <Route path="/" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );

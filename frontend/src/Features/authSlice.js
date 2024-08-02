@@ -24,7 +24,7 @@ export const RemoveToken = createAsyncThunk(
   'auth/removeToken',
   async (state, thunkAPI) => {
     try {
-      const response = await RemoveTokenApi({id: state.id});
+      const response = await RemoveTokenApi(state.id);
       return {status: response?.status};
     } catch (error) {
       return thunkAPI.rejectWithValue(error?.response?.status);

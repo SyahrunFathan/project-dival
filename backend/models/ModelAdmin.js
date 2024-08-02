@@ -1,5 +1,5 @@
-import { DataTypes } from "sequelize";
-import db from "../configs/Database.js";
+const { DataTypes } = require("sequelize");
+const db = require("../configs/Database.js");
 
 const ModelAdmin = db.define(
   "tb_admin",
@@ -37,4 +37,4 @@ const ModelAdmin = db.define(
   }
 );
 
-export default ModelAdmin;
+module.exports = ModelAdmin;

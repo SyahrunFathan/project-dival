@@ -1,31 +1,28 @@
-import express from "express";
-import cookieParser from "cookie-parser";
-import fileUpload from "express-fileupload";
-import dotenv from "dotenv";
-import cors from "cors";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
+const express = require("express");
+const cookieParser = require("cookie-parser");
+const fileUpload = require("express-fileupload");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const path = require("path");
 dotenv.config();
 
-import db from "./configs/Database.js";
-import RouteRumahSakit from "./routers/website/RouteRumahSakit.js";
-import RouteGraph from "./routers/website/RouteGraph.js";
-import RouteDarah from "./routers/website/RouteDarah.js";
-import RoutePengantaran from "./routers/website/RoutePengantaran.js";
-import RouteUser from "./routers/website/RouteUser.js";
-// import ModelCreate from "./models/ModelPengantaran.js";
+const db = require("./configs/Database.js");
+const RouteRumahSakit = require("./routers/website/RouteRumahSakit.js");
+const RouteGraph = require("./routers/website/RouteGraph.js");
+const RouteDarah = require("./routers/website/RouteDarah.js");
+const RoutePengantaran = require("./routers/website/RoutePengantaran.js");
+const RouteUser = require("./routers/website/RouteUser.js");
+const RouteUserMobile = require("./routers/mobile/RouteUser.js");
+const RouteAdmin = require("./routers/website/RouteAdmin.js");
 
 const app = express();
 
 try {
-  await db.authenticate();
+  db.authenticate();
   // await ModelCreate.sync();
 } catch (error) {
   console.log(error);
 }
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use("/public", express.static(path.join(__dirname, "public")));
@@ -38,5 +35,7 @@ app.use("/graph", RouteGraph);
 app.use("/darah", RouteDarah);
 app.use("/pengantaran", RoutePengantaran);
 app.use("/user", RouteUser);
+app.use("/user-mobile", RouteUserMobile);
+app.use("/admin", RouteAdmin);
 
 app.listen(5001, () => console.log("Server up running at port 5001...."));

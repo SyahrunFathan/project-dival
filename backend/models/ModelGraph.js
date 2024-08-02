@@ -1,6 +1,6 @@
-import { DataTypes } from "sequelize";
-import db from "../configs/Database.js";
-import ModelRumahSakit from "./ModelRumahSakit.js";
+const { DataTypes } = require("sequelize");
+const db = require("../configs/Database.js");
+const ModelRumahSakit = require("./ModelRumahSakit.js");
 
 const ModelGraph = db.define(
   "tb_graph",
@@ -29,5 +29,6 @@ const ModelGraph = db.define(
 );
 
 ModelGraph.belongsTo(ModelRumahSakit, { foreignKey: "rs_id", as: "rs" });
+ModelRumahSakit.hasMany(ModelGraph, { foreignKey: "rs_id", as: "graph" });
 
-export default ModelGraph;
+module.exports = ModelGraph;

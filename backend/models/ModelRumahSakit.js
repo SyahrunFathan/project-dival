@@ -1,5 +1,5 @@
-import { DataTypes } from "sequelize";
-import db from "../configs/Database.js";
+const { DataTypes } = require("sequelize");
+const db = require("../configs/Database.js");
 
 const ModelRumahSakit = db.define(
   "tb_rs",
@@ -30,4 +30,4 @@ const ModelRumahSakit = db.define(
   }
 );
 
-export default ModelRumahSakit;
+module.exports = ModelRumahSakit;

@@ -1,8 +1,8 @@
-import { DataTypes } from "sequelize";
-import db from "../configs/Database.js";
-import ModelUser from "./ModelUser.js";
-import ModelRumahSakit from "./ModelRumahSakit.js";
-import ModelDarah from "./ModelDarah.js";
+const { DataTypes } = require("sequelize");
+const db = require("../configs/Database.js");
+const ModelUser = require("./ModelUser.js");
+const ModelRumahSakit = require("./ModelRumahSakit.js");
+const ModelDarah = require("./ModelDarah.js");
 
 const ModelPengantaran = db.define(
   "tb_pengantaran",
@@ -30,6 +30,9 @@ const ModelPengantaran = db.define(
     status: {
       type: DataTypes.INTEGER,
     },
+    tanggal: {
+      type: DataTypes.DATEONLY,
+    },
   },
   {
     freezeTableName: true,
@@ -40,4 +43,4 @@ ModelPengantaran.belongsTo(ModelUser, { foreignKey: "user_id", as: "user" });
 ModelPengantaran.belongsTo(ModelRumahSakit, { foreignKey: "rs_id", as: "rs" });
 ModelPengantaran.belongsTo(ModelDarah, { foreignKey: "darah_id", as: "darah" });
 
-export default ModelPengantaran;
+module.exports = ModelPengantaran;

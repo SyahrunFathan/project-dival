@@ -16,6 +16,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@reduxjs/toolkit": "^2.2.5",
+    "@rnmapbox/maps": "^10.1.28",
     "axios": "^1.7.2",
     "graph-data-structure": "^3.5.0",
     "jwt-decode": "^4.0.0",

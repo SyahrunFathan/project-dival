@@ -106,6 +106,7 @@ const UserPage = () => {
     });
     setImageSrc(null);
     setImageFile(null);
+    setUserId("");
   };
 
   const handleChangeImage = (e) => {
@@ -236,6 +237,7 @@ const UserPage = () => {
             });
             setImageSrc(null);
             setImageFile(null);
+            setUserId("");
           });
         }
       } catch (error) {
@@ -307,6 +309,8 @@ const UserPage = () => {
             showSuccess(response?.payload?.data?.message, () => {
               AmbilDataUser();
             });
+          } else {
+            console.log(response?.payload);
           }
         } catch (error) {
           console.log(error?.response?.data);

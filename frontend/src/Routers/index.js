@@ -1,12 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {
   HistoryScreen,
   HomeSecreen,
   LoginScreen,
-  ProfileScreen,
   SplashScreen,
+  SuccessScreen,
 } from '../Screen';
 import {COLORS} from '../Assets';
 import {IonIcon} from '../Components';
@@ -27,9 +27,6 @@ const Main = () => {
           } else if (route.name === 'History') {
             iconName = focused ? 'alarm' : 'alarm-outline';
             size = focused ? size + 10 : size + 7;
-          } else if (route.name === 'Profile') {
-            iconName = focused ? 'person-circle' : 'person-circle-outline';
-            size = focused ? size + 10 : size + 7;
           }
 
           return <IonIcon name={iconName} size={size} color={color} />;
@@ -39,8 +36,7 @@ const Main = () => {
         tabBarStyle: {
           backgroundColor: COLORS.primary,
           height: 60,
-          borderTopStartRadius: 20,
-          borderTopEndRadius: 20,
+          display: route.name === 'Home' ? 'none' : 'flex',
         },
         tabBarLabelStyle: {
           marginBottom: -10,
@@ -54,11 +50,6 @@ const Main = () => {
       <Tab.Screen
         name="History"
         component={HistoryScreen}
-        options={{headerShown: false, title: ''}}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
         options={{headerShown: false, title: ''}}
       />
     </Tab.Navigator>
@@ -99,6 +90,13 @@ const Routes = () => {
           headerShown: false,
           statusBarColor: COLORS.primary,
           statusBarStyle: 'light',
+        }}
+      />
+      <Stack.Screen
+        name="Success"
+        component={SuccessScreen}
+        options={{
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

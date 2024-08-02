@@ -1,5 +1,8 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-import {patchPengantaranByUserApi} from '../Utils/Apis';
+import {
+  patchPengantaranByUserApi,
+  updatePengantaranByUserApi,
+} from '../Utils/Apis';
 
 const initialState = {
   isLoading: false,
@@ -19,6 +22,18 @@ export const PatchPengantaranByUser = createAsyncThunk(
   },
 );
 
+export const UpdateStatusPengantaran = createAsyncThunk(
+  'pengantaran/updatePengantaran',
+  async (state, thunkAPI) => {
+    try {
+      const response = await updatePengantaranByUserApi(state?.id);
+      return {status: response?.status, data: response?.data};
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error?.response);
+    }
+  },
+);
+
 export const pengantaranSlice = createSlice({
   name: 'pengantaran',
   initialState,
@@ -34,6 +49,17 @@ export const pengantaranSlice = createSlice({
       state.isSuccess = true;
     });
     builder.addCase(PatchPengantaranByUser.rejected, state => {
+      state.isLoading = false;
+      state.isError = true;
+    });
+    builder.addCase(UpdateStatusPengantaran.pending, state => {
+      state.isLoading = true;
+    });
+    builder.addCase(UpdateStatusPengantaran.fulfilled, state => {
+      state.isLoading = false;
+      state.isSuccess = true;
+    });
+    builder.addCase(UpdateStatusPengantaran.rejected, state => {
       state.isLoading = false;
       state.isError = true;
     });

@@ -1,5 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { patchPengantaran } from "../utils/apis";
+import {
+  deletePengantaranApi,
+  patchPengantaran,
+  postPengantaranApi,
+} from "../utils/apis";
 
 const initialState = {
   isLoading: false,
@@ -16,6 +20,37 @@ export const GetPengantaran = createAsyncThunk(
         state.limit,
         state.page
       );
+
+      return { status: response.status, data: response.data };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const DeletePengantaran = createAsyncThunk(
+  "pengantaran/deletePengantaran",
+  async (state, thunkAPI) => {
+    try {
+      const response = await deletePengantaranApi(state.id);
+
+      return { status: response.status, data: response.data };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const CreatePengantaran = createAsyncThunk(
+  "pengantaran/cretePengantaran",
+  async (state, thunkAPI) => {
+    try {
+      const response = await postPengantaranApi({
+        userId: state.userId,
+        rsId: state.rsId,
+        darahId: state.darahId,
+        totalDarah: state.totalDarah,
+      });
 
       return { status: response.status, data: response.data };
     } catch (error) {

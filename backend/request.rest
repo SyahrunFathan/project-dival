@@ -7,3 +7,39 @@ Content-Type: application/json
 
 ###
 GET http://localhost:5001/pengantaran?searchKey=&limit=10&page0
+
+###
+POST http://localhost:5001/pengantaran
+Content-Type: application/json
+
+{
+    "rsId": "04270eff-67f5-4599-98bc-5cfb9128ae89",
+    "userId": "f792798f-3d1b-488b-8d59-cb16a48973c7",
+    "darahId": 5,
+    "totalDarah": 10
+}
+
+###
+POST http://localhost:5001/admin/create
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MjQzYjM5Yi1mYWExLTRmN2ItOWNlNy0wNTU3NDRlMzEzMDkiLCJlbWFpbCI6InN5YWhydWxtZWkwMDJAZ21haWwuY29tIiwibmFtZSI6IlN5YWhydW4xOSIsImlhdCI6MTcyMjI1Njg2NSwiZXhwIjoxNzIyMjU2ODk1fQ.WruzrPRk3yOf6o4LC-Rx_SNaE3OtXZJNdfbOoO7L8ps
+
+{
+    "nama": "Syahrun Fathan Hidayah",
+    "email": "syahrulmei002@gmail.com",
+    "noTelp": "081244423801",
+    "username": "Syahrun19",
+    "password": "@Syahrun19"
+}
+
+###
+POST http://localhost:5001/admin/login
+Content-Type: application/json
+
+{
+    "email": "syahrulmei002@gmail.com",
+    "password": "@Syahrun19"
+}
+
+###
+DELETE http://localhost:5001/admin/remove-token/8243b39b-faa1-4f7b-9ce7-055744e31309

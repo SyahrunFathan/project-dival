@@ -26,6 +26,8 @@ export const updateRumahSakitApi = async (id, data) =>
 export const patchGraphApi = async () => API.get("/graph");
 export const deleteGraphApi = async (id) => API.delete(`/graph/${id}`);
 export const postGraphApi = async (data) => API.post("/graph", data);
+export const postDirectionApi = async (data) =>
+  API.post("/graph/direction", data);
 
 // API Darah
 export const patchDarahApi = async () => API.get("/darah");
@@ -37,6 +39,12 @@ export const deleteDarahApi = async (id) => API.delete(`/darah/${id}`);
 // API Pengantaran
 export const patchPengantaran = async (searchKey, limit, page) =>
   API.get(`/pengantaran?searchKey=${searchKey}&limit=${limit}&page=${page}`);
+export const postPengantaranApi = async (data) =>
+  API.post("/pengantaran", data);
+export const patchAllData = async () => API.get("/pengantaran/all");
+export const deletePengantaranApi = async (id) =>
+  API.delete(`/pengantaran/${id}`);
+export const patchCountData = async () => API.get("/pengantaran/count-all");
 
 // API User
 export const patchDataUserApi = async (searchKey, limit, page) =>
@@ -57,3 +65,8 @@ export const updateUserApi = async (id, data) =>
     },
   });
 export const deleteUserApi = async (id) => API.delete(`/user/${id}`);
+
+// API Auth
+export const loginAdminApi = async (data) => API.post("/admin/login", data);
+export const removeTokenApi = async (id) =>
+  API.delete(`/admin/remove-token/${id}`);
